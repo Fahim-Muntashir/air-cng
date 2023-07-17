@@ -1,20 +1,33 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import qs from "query-string";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CategoryBox = ({ label, icon: Icon }) => {
+  const [params, setParams] = useSearchParams();
+  const value = params.get("category");
+  const navigate = useNavigate();
   const handleClick = () => {
     let currentQuery = {};
     if (params) {
-  currentQuery=
-}
+      currentQuery = qs.parse(params.toString());
     }
+    const updatedQuery = {
+      ...currentQuery,
+      category: label,
+    };
+    const url = qs.stringifyUrl(
+      {
+        url: "/",
+        query: updatedQuery,
+      },
+      { skipNull: true }
+    );
+    navigate(url);
   };
-  const { params, setParams } = useSearchParams();
-  const value = params.get("category");
   return (
     <div
       onClick={handleClick}
-      className="flex flex-col items-center justify-center gap-2 p-3 border-b-3 hover:text-neutral-800 border-transparent text-neutral-500"
+      className="flex cursor-pointer flex-col items-center justify-center gap-2 p-3 border-b-3 hover:text-neutral-800 border-transparent text-neutral-500"
     >
       <Icon size={26} />
       <div className="text-sm font-medium">{label}</div>
