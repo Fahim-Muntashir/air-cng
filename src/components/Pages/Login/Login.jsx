@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useContext, useRef } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { saveUSER } from "../../../api/auth";
 
 const Login = () => {
   const { loading, setLoading, signIn, signInWithGoogle, resetPassword } =
@@ -21,6 +22,7 @@ const Login = () => {
     signIn(email, password)
       .then((result) => {
         console.log(result.user);
+        saveUSER(result.user);
         navigate(from, { replace: true });
       })
       .catch((err) => {
@@ -51,6 +53,8 @@ const Login = () => {
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
+        // save user to db
+        saveUSER(result.user);
         navigate(from, { replace: true });
       })
       .catch((err) => {
